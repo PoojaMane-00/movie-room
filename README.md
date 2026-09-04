@@ -134,12 +134,6 @@ Start the Laravel application:
 php artisan serve
 ```
 
-For frontend development, start Vite:
-
-```bash
-npm run dev
-```
-
 The application will be available at:
 
 ```text
