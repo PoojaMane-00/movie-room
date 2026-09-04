@@ -4,55 +4,55 @@ A Laravel-based real-time movie room application where a host can create a room,
 
 ## Features
 
-* Create a movie room with:
+- Create a movie room with:
+    - Room name
+    - Publicly accessible video URL
 
-  * Room name
-  * Publicly accessible video URL
-* Generate a unique UUID-based room link
-* Allow participants to join using the shared link
-* Participants enter a display name before joining
-* Host-only playback controls:
+- Generate a unique UUID-based room link
+- Allow participants to join using the shared link
+- Participants enter a display name before joining
+- Host-only playback controls:
+    - Play
+    - Pause
+    - Stop
+    - End session
 
-  * Play
-  * Pause
-  * Stop
-  * End session
-* Real-time playback synchronization using Laravel Reverb and Laravel Echo
-* Real-time room chat
-* Display sender name and message timestamp
-* Host moderation:
+- Real-time playback synchronization using Laravel Reverb and Laravel Echo
+- Real-time room chat
+- Display sender name and message timestamp
+- Host moderation:
+    - Mute/unmute participants
+    - Delete chat messages
+    - Enable/disable chat
 
-  * Mute/unmute participants
-  * Delete chat messages
-  * Enable/disable chat
-* Prevent muted participants from sending messages
-* Prevent access and chat activity after a room has ended
-* Server-side authorization for host-only actions
-* Message validation and rate limiting
-* XSS-safe message rendering
-* Automated feature tests
+- Prevent muted participants from sending messages
+- Prevent access and chat activity after a room has ended
+- Server-side authorization for host-only actions
+- Message validation and rate limiting
+- XSS-safe message rendering
+- Automated feature tests
 
 ## Tech Stack
 
-* PHP 8.3+
-* Laravel 13
-* MySQL
-* Laravel Reverb
-* Laravel Echo
-* Pusher JS
-* Blade
-* Tailwind CSS
-* Vite
-* PHPUnit
+- PHP 8.3+
+- Laravel 13
+- MySQL
+- Laravel Reverb
+- Laravel Echo
+- Pusher JS
+- Blade
+- Tailwind CSS
+- Vite
+- PHPUnit
 
 ## Requirements
 
 Make sure the following are installed:
 
-* PHP 8.3+
-* Composer
-* MySQL 8+
-* Node.js and npm
+- PHP 8.3+
+- Composer
+- MySQL 8+
+- Node.js and npm
 
 ## Installation
 
@@ -96,13 +96,13 @@ Run migrations and seed the demo host:
 php artisan migrate --seed
 ```
 
-Build the frontend assets:
+## Reverb Configuration
+
+Install Laravel Reverb:
 
 ```bash
-npm run build
+php artisan reverb:install
 ```
-
-## Reverb Configuration
 
 Configure Laravel Reverb in `.env`:
 
@@ -122,13 +122,29 @@ VITE_REVERB_PORT="${REVERB_PORT}"
 VITE_REVERB_SCHEME="${REVERB_SCHEME}"
 ```
 
-Start the Reverb WebSocket server:
+Clear the configuration cache:
+
+```bash
+php artisan optimize:clear
+```
+
+## Build Frontend Assets
+
+```bash
+npm run build
+```
+
+## Running the Application
+
+The application requires two processes: the Laravel application server and the Reverb WebSocket server.
+
+Start the Reverb WebSocket server in one terminal:
 
 ```bash
 php artisan reverb:start
 ```
 
-Start the Laravel application:
+In a separate terminal, start the Laravel application:
 
 ```bash
 php artisan serve
@@ -138,6 +154,12 @@ The application will be available at:
 
 ```text
 http://localhost:8000
+```
+
+Reverb WebSocket server:
+
+```text
+ws://localhost:8080
 ```
 
 ## Demo Host
@@ -172,11 +194,10 @@ Participants do not require an account. They join using the room link and provid
 1. Open the shared room URL
 2. Enter a display name
 3. Join the room
-4. Start watching the video
-5. Watch the synchronized video
-6. Participate in the room chat
+4. Watch the synchronized video
+5. Participate in the room chat
 
-Participants do not receive playback controls.
+Participants do not have access to playback controls.
 
 ## Architecture
 
@@ -293,24 +314,24 @@ Host-only operations are protected on the server side using Laravel authorizatio
 
 The following operations require host authorization:
 
-* Playback control
-* Ending a session
-* Muting/unmuting participants
-* Deleting chat messages
-* Enabling/disabling chat
+- Playback control
+- Ending a session
+- Muting/unmuting participants
+- Deleting chat messages
+- Enabling/disabling chat
 
 Frontend controls are only a usability layer; authorization is enforced by the backend.
 
 ## Security Considerations
 
-* UUIDs are used for shareable room URLs to avoid predictable sequential room identifiers.
-* UUIDs provide URL obscurity but are not treated as an authorization mechanism.
-* Server-side authorization prevents participants from performing host-only actions.
-* Chat messages are validated before storage.
-* Messages are rendered as text rather than HTML to prevent XSS through message content.
-* Chat sending is rate-limited to 10 requests per minute.
-* Ended rooms reject further participation and chat activity.
-* Muted participants cannot send chat messages.
+- UUIDs are used for shareable room URLs to avoid predictable sequential room identifiers.
+- UUIDs provide URL obscurity but are not treated as an authorization mechanism.
+- Server-side authorization prevents participants from performing host-only actions.
+- Chat messages are validated before storage.
+- Messages are rendered as text rather than HTML to prevent XSS through message content.
+- Chat sending is rate-limited to 10 requests per minute.
+- Ended rooms reject further participation and chat activity.
+- Muted participants cannot send chat messages.
 
 ## Chat Lifecycle
 
@@ -352,7 +373,6 @@ Code formatting can be checked or fixed using Laravel Pint:
 vendor\bin\pint
 ```
 
-
 ## Design Decisions
 
 ### Blade instead of a frontend framework
@@ -385,12 +405,12 @@ The implementation intentionally focuses on the core movie-room functionality.
 
 Possible production enhancements include:
 
-* Full Laravel authentication and registration
-* Private/presence WebSocket channels
-* Room ownership and access policies tied to authenticated users
-* Participant join/leave system messages
-* Persistent/archived chat history
-* More robust video-provider support
-* Automated browser/end-to-end tests
-* Production Reverb deployment and HTTPS/WSS configuration
-* More granular room/session services as the application grows
+- Full Laravel authentication and registration
+- Private/presence WebSocket channels
+- Room ownership and access policies tied to authenticated users
+- Participant join/leave system messages
+- Persistent/archived chat history
+- More robust video-provider support
+- Automated browser/end-to-end tests
+- Production Reverb deployment and HTTPS/WSS configuration
+- More granular room/session services as the application grows
