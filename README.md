@@ -168,7 +168,7 @@ Participants do not require an account. They join using the room link and provid
 2. Enter a room name
 3. Enter a publicly accessible video URL
 4. Create the room
-5. Share the generated room URL
+5. Copy the generated room URL from the browser address bar and share it with participants
 6. Use the host controls to control playback
 7. Moderate participants and chat when required
 8. End the session when finished
